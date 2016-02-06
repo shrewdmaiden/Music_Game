@@ -5,7 +5,7 @@ tested with Python27 and Python33  by  vegaseat  08nov2013
 '''
 import random
 # make string input work with Python2 or Python3
-try: input = raw_input()
+try: input = raw_input
 except: pass
 # a simple sample dictionary 'pick the right color'
 # keyword:[def1, def2, def3, correct_def_ix]
