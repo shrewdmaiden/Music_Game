@@ -16,8 +16,11 @@ class Game(object):
         card = Game.update_note(self,notes_dict)
         answer = notes_dict[card]
         response = ""
-        while 1:
-            dt = clock.tick(30)
+        running = 1
+        correctcount = 0
+        wrongcount = 0
+        while running:
+            clock.tick(30)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return
@@ -26,31 +29,60 @@ class Game(object):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_c and answer == "c":
                         response = "correct"
+                        correctcount += 1
                     elif event.key == pygame.K_d and answer == "d":
                         response = "correct"
+                        correctcount += 1
                     elif event.key == pygame.K_e and answer == "e":
                         response = "correct"
+                        correctcount += 1
                     elif event.key == pygame.K_f and answer == "f":
                         response = "correct"
+                        correctcount += 1
                     elif event.key == pygame.K_g and answer == "g":
                         response = "correct"
+                        correctcount += 1
                     elif event.key == pygame.K_a and answer == "a":
                         response = "correct"
+                        correctcount += 1
                     elif event.key == pygame.K_b and answer == "b":
                         response = "correct"
+                        correctcount += 1
                     else:
                         response = "wrong"
+                        wrongcount += 1
                     card = Game.update_note(self,notes_dict)
                     answer = notes_dict[card]
+            if pygame.time.get_ticks()>=90000:
+                running = 0
 
+            clockfont = pygame.font.Font(None, 20)
+            clocktext = clockfont.render(str((90000-pygame.time.get_ticks())//60000)+":"+str((90000-pygame.time.get_ticks())//1000%60).zfill(2), True, (0,0,0))
+            correcttext = clockfont.render("Correct: "+str(correctcount), True, (0,0,0))
+            wrongtext = clockfont.render("Wrong: "+str(wrongcount),True,(0,0,0))
             font = pygame.font.Font('freesansbold.ttf',52)
             TextSurf = font.render(response,True,(0,0,0))
             screen.fill(white)
             screen.blit(card,(10,10))
-            screen.blit(TextSurf,(500,600))
-
+            screen.blit(TextSurf,(440,600))
+            screen.blit(clocktext,(210,600))
+            screen.blit(correcttext,(110,600))
+            screen.blit(wrongtext,(10,600))
             pygame.display.flip()
 
+        while 1:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    return
+
+            finalcorrect = font.render("Correct: "+str(correctcount),True,(0,0,0))
+            finalwrong = font.render("Wrong: "+str(wrongcount),True,(0,0,0))
+            screen.fill(white)
+            screen.blit(finalcorrect,(200,200))
+            screen.blit(finalwrong,(500,200))
+            pygame.display.flip()
 
 
 if __name__ == '__main__':
