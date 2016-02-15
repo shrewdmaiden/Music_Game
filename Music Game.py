@@ -12,9 +12,21 @@ class Game(object):
     def main(self, screen):
         clock = pygame.time.Clock()
         white = (255,255,255)
-        notes_dict = {pygame.image.load('C4.png'):'c',pygame.image.load('D4.png'):'d',pygame.image.load('E4.png'):'e',pygame.image.load('F4.png'):'f',pygame.image.load('F3.png'):'f',pygame.image.load('G4.png'):'g',pygame.image.load('G3.png'):'g',pygame.image.load('A3.png'):'a',pygame.image.load('B3.png'):'b'}
+        notes_dict = {pygame.image.load('C4.png'):'c',
+                      pygame.image.load('D4.png'):'d',
+                      pygame.image.load('E4.png'):'e',
+                      pygame.image.load('F4.png'):'f',
+                      pygame.image.load('F3.png'):'f',
+                      pygame.image.load('G4.png'):'g',
+                      pygame.image.load('G3.png'):'g',
+                      pygame.image.load('A3.png'):'a',
+                      pygame.image.load('A4.png'):'a',
+                      pygame.image.load('B4.png'):'b',
+                      pygame.image.load('C5.png'):'c',
+                      pygame.image.load('E3.png'):'e'}
         card = Game.update_note(self,notes_dict)
         answer = notes_dict[card]
+        background = pygame.image.load('Book.png')
         response = ""
         running = 1
         correctcount = 0
@@ -56,18 +68,18 @@ class Game(object):
             if pygame.time.get_ticks()>=90000:
                 running = 0
 
-            clockfont = pygame.font.Font(None, 20)
-            clocktext = clockfont.render(str((90000-pygame.time.get_ticks())//60000)+":"+str((90000-pygame.time.get_ticks())//1000%60).zfill(2), True, (0,0,0))
+            clockfont = pygame.font.SysFont("vivaldi", 40)
+            clocktext = clockfont.render("Time left: "+str((90000-pygame.time.get_ticks())//60000)+":"+str((90000-pygame.time.get_ticks())//1000%60).zfill(2), True, (0,0,0))
             correcttext = clockfont.render("Correct: "+str(correctcount), True, (0,0,0))
             wrongtext = clockfont.render("Wrong: "+str(wrongcount),True,(0,0,0))
-            font = pygame.font.Font('freesansbold.ttf',52)
+            font = pygame.font.SysFont('vivaldi',52)
             TextSurf = font.render(response,True,(0,0,0))
-            screen.fill(white)
-            screen.blit(card,(10,10))
-            screen.blit(TextSurf,(440,600))
-            screen.blit(clocktext,(210,600))
-            screen.blit(correcttext,(110,600))
-            screen.blit(wrongtext,(10,600))
+            screen.blit(background,(0,0))
+            screen.blit(card,(525,150))
+            screen.blit(TextSurf,(650,540))
+            screen.blit(clocktext,(200,150))
+            screen.blit(correcttext,(200,200))
+            screen.blit(wrongtext,(200,250))
             pygame.display.flip()
 
         while 1:
@@ -79,9 +91,15 @@ class Game(object):
 
             finalcorrect = font.render("Correct: "+str(correctcount),True,(0,0,0))
             finalwrong = font.render("Wrong: "+str(wrongcount),True,(0,0,0))
-            screen.fill(white)
+            if correctcount == 0:
+                accuracy = 0
+            else:
+                accuracy = round(correctcount/(correctcount+wrongcount)*100,2)
+            finalaccuracy = font.render("Accuracy: "+str(accuracy)+"%",True,(0,0,0))
+            screen.blit(background,(0,0))
             screen.blit(finalcorrect,(200,200))
-            screen.blit(finalwrong,(500,200))
+            screen.blit(finalwrong,(190,300))
+            screen.blit(finalaccuracy,(160,400))
             pygame.display.flip()
 
 
